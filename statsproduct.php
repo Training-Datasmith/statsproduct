@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Copyright since 2007 PrestaShop SA and Contributors
  * PrestaShop is an International Registered Trademark & Property of PrestaShop SA
@@ -381,7 +383,7 @@ class statsproduct extends ModuleGraph
                 $this->_titles['main'][0] = $this->trans('Popularity', [], 'Modules.Statsproduct.Admin');
                 $this->_titles['main'][1] = $this->trans('Sales', [], 'Admin.Global');
                 $this->_titles['main'][2] = $this->trans('Visits (x100)', [], 'Modules.Statsproduct.Admin');
-          $this->query = [];
+                $this->query = [];
                 $this->query[0] = 'SELECT o.`date_add`, SUM(od.`product_quantity`) AS total
 						FROM `' . _DB_PREFIX_ . 'order_detail` od
 						LEFT JOIN `' . _DB_PREFIX_ . 'orders` o ON o.`id_order` = od.`id_order`
