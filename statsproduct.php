@@ -265,7 +265,7 @@ class statsproduct extends ModuleGraph
 							<td>' . Tools::displayDate($sale['date_add']) . '</td>
 							<td class="text-center"><a href="' . $this->context->link->getAdminLink('AdminOrders', true, [], ['vieworder' => 1, 'id_order' => $sale['id_order']]) . '">' . (int) $sale['id_order'] . '</a></td>
 							<td class="text-center"><a href="' . $this->context->link->getAdminLink('AdminCustomers', true, [], ['viewcustomer' => 1, 'id_customer' => $sale['id_customer']]) . '">' . (int) $sale['id_customer'] . '</a></td>
-							' . ($has_attribute ? '<td>' . $sale['product_name'] . '</td>' : '') . '
+							' . ($has_attribute ? '<td>' . htmlspecialchars($sale['product_name'], ENT_QUOTES, 'UTF-8') . '</td>' : '') . '
 							<td>' . (int) $sale['product_quantity'] . '</td>
 							<td>' . $this->context->getCurrentLocale()->formatPrice($sale['total'], $currency->iso_code) . '</td>
 						</tr>';
@@ -298,7 +298,7 @@ class statsproduct extends ModuleGraph
                     foreach ($cross_selling as $selling) {
                         $this->html .= '
 							<tr>
-								<td><a href="' . $this->context->link->getAdminLink('AdminProducts', true, [], ['id_product' => (int) $selling['id_product'], 'updateproduct' => 1]) . '">' . $selling['pname'] . '</a></td>
+								<td><a href="' . $this->context->link->getAdminLink('AdminProducts', true, [], ['id_product' => (int) $selling['id_product'], 'updateproduct' => 1]) . '">' . htmlspecialchars($selling['pname'], ENT_QUOTES, 'UTF-8') . '</a></td>
 								<td class="text-center">' . (int) $selling['pqty'] . '</td>
 								<td class="text-right">' . $this->context->getCurrentLocale()->formatPrice($selling['pprice'], $currency->iso_code) . '</td>
 							</tr>';
@@ -350,9 +350,9 @@ class statsproduct extends ModuleGraph
             foreach ($this->getProducts($this->context->language->id) as $product) {
                 $this->html .= '
 				<tr>
-					<td>' . $product['reference'] . '</td>
+					<td>' . htmlspecialchars($product['reference'], ENT_QUOTES, 'UTF-8') . '</td>
 					<td>
-						<a href="' . Tools::safeOutput($this->context->link->getAdminLink('AdminStats', true, [], ['module' => $this->name, 'id_product' => (int) $product['id_product']])) . '">' . $product['name'] . '</a>
+						<a href="' . Tools::safeOutput($this->context->link->getAdminLink('AdminStats', true, [], ['module' => $this->name, 'id_product' => (int) $product['id_product']])) . '">' . htmlspecialchars($product['name'], ENT_QUOTES, 'UTF-8') . '</a>
 					</td>
 					<td>' . $product['quantity'] . '</td>
 				</tr>';
