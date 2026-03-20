@@ -51,6 +51,11 @@ class statsproduct extends ModuleGraph
         $this->ps_versions_compliancy = ['min' => '1.7.6.0', 'max' => _PS_VERSION_];
     }
 
+    /**
+     * Install the module and register the stats dashboard hook.
+     *
+     * @return bool True on successful installation, false otherwise
+     */
     public function install()
     {
         return parent::install() && $this->registerHook('displayAdminStatsModules');
@@ -155,6 +160,14 @@ class statsproduct extends ModuleGraph
         return Db::getInstance((bool) _PS_USE_SQL_SLAVE_)->executeS($sql);
     }
 
+    /**
+     * Render the per-product statistics view on the admin statistics dashboard.
+     *
+     * Shows page views, add-to-cart events, and purchases for a specific product,
+     * filtered by category and date range. Supports CSV export of each data series.
+     *
+     * @return string HTML output for the statistics widget
+     */
     public function hookDisplayAdminStatsModules()
     {
         $id_category = (int) Tools::getValue('id_category');
