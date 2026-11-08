@@ -20,10 +20,10 @@ class GraphTest extends StatsproductTestCase
         $this->probe->setOption('1-10');
         $this->probe->runGetData(2);
         $values = $this->probe->exposeValues();
-        $this->assertSame(1, (int) $values[0][0]);
-        $this->assertSame(4, (int) $values[0][14]);
+        $this->assertIntegerScalar(1, $values[0][0], 'hour 0 sales bucket');
+        $this->assertIntegerScalar(4, $values[0][14], 'hour 14 sales bucket');
         $this->assertIntegerScalar(0, $values[0][1], 'hour 1 sales bucket');
-        $this->assertEquals(2.0, (float) $values[1][14], '', 0.001);
+        $this->assertDecimalScalarEquals(2.0, $values[1][14], 0.001, 'hour 14 visits bucket (x100 scaled)');
         $this->assertIntegerScalar(0, $values[1][0], 'hour 0 visits bucket');
     }
 
@@ -48,8 +48,8 @@ class GraphTest extends StatsproductTestCase
         $this->probe->setOption('1-10');
         $this->probe->runGetData(2);
         $values = $this->probe->exposeValues();
-        $this->assertSame(2, (int) $values[0][6]);
-        $this->assertSame(5, (int) $values[0][15]);
+        $this->assertIntegerScalar(2, $values[0][6], 'day 6 sales bucket');
+        $this->assertIntegerScalar(5, $values[0][15], 'day 15 sales bucket');
         $this->assertIntegerScalar(0, $values[0][1], 'day 1 sales bucket');
     }
 
@@ -64,7 +64,7 @@ class GraphTest extends StatsproductTestCase
         $this->probe->setOption('1-10');
         $this->probe->runGetData(2);
         $values = $this->probe->exposeValues();
-        $this->assertSame(6, (int) $values[0][3]);
+        $this->assertIntegerScalar(6, $values[0][3], 'month 3 sales bucket');
         $this->assertIntegerScalar(0, $values[0][1], 'month 1 sales bucket');
     }
 
@@ -81,8 +81,8 @@ class GraphTest extends StatsproductTestCase
         $this->probe->setOption('1-10');
         $this->probe->runGetData(2);
         $values = $this->probe->exposeValues();
-        $this->assertSame(4, (int) $values[0][2017]);
-        $this->assertSame(1, (int) $values[0][2019]);
+        $this->assertIntegerScalar(4, $values[0][2017], 'year 2017 sales bucket');
+        $this->assertIntegerScalar(1, $values[0][2019], 'year 2019 sales bucket');
         $this->assertIntegerScalar(0, $values[0][2016], 'year 2016 sales bucket');
     }
 
@@ -106,8 +106,8 @@ class GraphTest extends StatsproductTestCase
         foreach ($this->probe->exposeLegend() as $idx => $label) {
             $map[$label] = $this->probe->exposeValues()[$idx];
         }
-        $this->assertSame(5, (int) $map['Anchor - Large']);
-        $this->assertSame(2, (int) $map['Anchor']);
+        $this->assertIntegerScalar(5, $map['Anchor - Large'], 'attribute pie Anchor - Large qty');
+        $this->assertIntegerScalar(2, $map['Anchor'], 'attribute pie Anchor qty');
         $this->assertCount(2, $map);
     }
 }

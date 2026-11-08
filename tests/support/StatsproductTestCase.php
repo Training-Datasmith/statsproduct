@@ -48,4 +48,26 @@ class StatsproductTestCase extends PHPUnit_Framework_TestCase
         $normalized = is_int($actual) ? $actual : (int) $actual;
         $this->assertSame($expected, $normalized, $message);
     }
+
+    protected function isDecimalScalar($value)
+    {
+        if (is_int($value) || is_float($value)) {
+            return true;
+        }
+        if (is_string($value) && preg_match('/^-?\d+(\.\d+)?$/', $value)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    protected function assertDecimalScalarEquals($expected, $actual, $delta, $message = '')
+    {
+        $this->assertTrue(
+            $this->isDecimalScalar($actual),
+            ($message !== '' ? $message . ': ' : '') . 'expected int, float, or decimal string, got ' . var_export($actual, true)
+        );
+        $normalized = is_float($actual) || is_int($actual) ? (float) $actual : (float) $actual;
+        $this->assertEquals($expected, $normalized, $message, $delta);
+    }
 }
