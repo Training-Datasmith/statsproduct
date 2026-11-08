@@ -22,9 +22,9 @@ class GraphTest extends StatsproductTestCase
         $values = $this->probe->exposeValues();
         $this->assertSame(1, (int) $values[0][0]);
         $this->assertSame(4, (int) $values[0][14]);
-        $this->assertSame(0, (int) $values[0][1]);
+        $this->assertIntegerScalar(0, $values[0][1], 'hour 1 sales bucket');
         $this->assertEquals(2.0, (float) $values[1][14], '', 0.001);
-        $this->assertSame(0, (int) $values[1][0]);
+        $this->assertIntegerScalar(0, $values[1][0], 'hour 0 visits bucket');
     }
 
     public function testMonthWindowSumsQuantitiesOntoTheDayOfMonth()
@@ -50,7 +50,7 @@ class GraphTest extends StatsproductTestCase
         $values = $this->probe->exposeValues();
         $this->assertSame(2, (int) $values[0][6]);
         $this->assertSame(5, (int) $values[0][15]);
-        $this->assertSame(0, (int) $values[0][1]);
+        $this->assertIntegerScalar(0, $values[0][1], 'day 1 sales bucket');
     }
 
     public function testSubYearWindowBucketsByMonth()
@@ -65,7 +65,7 @@ class GraphTest extends StatsproductTestCase
         $this->probe->runGetData(2);
         $values = $this->probe->exposeValues();
         $this->assertSame(6, (int) $values[0][3]);
-        $this->assertSame(0, (int) $values[0][1]);
+        $this->assertIntegerScalar(0, $values[0][1], 'month 1 sales bucket');
     }
 
     public function testMultiYearWindowBucketsByYear()
@@ -83,7 +83,7 @@ class GraphTest extends StatsproductTestCase
         $values = $this->probe->exposeValues();
         $this->assertSame(4, (int) $values[0][2017]);
         $this->assertSame(1, (int) $values[0][2019]);
-        $this->assertSame(0, (int) $values[0][2016]);
+        $this->assertIntegerScalar(0, $values[0][2016], 'year 2016 sales bucket');
     }
 
     public function testAttributePieUsesSnapshotNamesAndQuantities()

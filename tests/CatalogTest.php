@@ -23,9 +23,10 @@ class CatalogTest extends StatsproductTestCase
 
         $this->assertSame(array('Alpha', 'Bravo'), $values[1]);
         $this->assertSame(array('REF-A', 'REF-B'), $values[0]);
-        $this->assertSame(8, (int) $values[2][0]);
-        $this->assertSame(0, (int) $values[2][1]);
-        $this->assertSame(array(1, 2), array_map('intval', $legend));
+        $this->assertIntegerScalar(8, $values[2][0], 'Alpha stock quantity');
+        $this->assertIntegerScalar(0, $values[2][1], 'Bravo stock quantity without stock row');
+        $this->assertIntegerScalar(1, $legend[0], 'legend product id Alpha');
+        $this->assertIntegerScalar(2, $legend[1], 'legend product id Bravo');
     }
 
     public function testCategoryFilterKeepsOnlyTheRequestedCategory()
