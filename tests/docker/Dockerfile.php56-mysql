@@ -1,0 +1,13 @@
+FROM debian@sha256:734a72b3d6142a71993b4bc580ca01d8ca687f77a2c422d96a961d3376b179bc AS debiankey
+
+FROM php@sha256:6ce95208609dc66df163ab936c970b3b34cd901b85c747102c5999f08ade9143
+
+COPY --from=debiankey /usr/share/keyrings/debian-archive-keyring.gpg /usr/share/keyrings/debian-archive-keyring.gpg
+
+RUN printf 'deb [signed-by=/usr/share/keyrings/debian-archive-keyring.gpg] http://archive.debian.org/debian stretch main\n' > /etc/apt/sources.list \
+ && echo 'Acquire::Check-Valid-Until "false";' > /etc/apt/apt.conf.d/99no-check-valid-until \
+ && apt-get update \
+ && apt-get install -y --no-install-recommends gnupg ca-certificates $PHPIZE_DEPS default-libmysqlclient-dev \
+ && docker-php-ext-install pdo_mysql \
+ && apt-get clean \
+ && rm -rf /var/lib/apt/lists/*

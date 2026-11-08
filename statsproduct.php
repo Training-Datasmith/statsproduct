@@ -140,6 +140,7 @@ class statsproduct extends ModuleGraph
 						FROM `' . _DB_PREFIX_ . 'orders` o
 						LEFT JOIN `' . _DB_PREFIX_ . 'order_detail` od ON o.id_order = od.id_order
 						WHERE o.date_add BETWEEN ' . $this->getDate() . '
+							' . Shop::addSqlRestriction(Shop::SHARE_ORDER, 'o') . '
 						AND o.valid = 1
 						AND od.product_id = ' . (int) $id_product . '
 					)
